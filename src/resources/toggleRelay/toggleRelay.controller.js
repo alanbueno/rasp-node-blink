@@ -16,33 +16,33 @@
 //   "transistor3": 4 
 // }
 
-const relayBanks = {a: 0x12, b: 0x13}
+const relayBanks = {a: [0x12], b: [0x13]}
 
 const relays = [
-  {iRelay: 1, iDic: 0, bank: relayBanks['a']},
-  {iRelay: 2, iDic: 1, bank: relayBanks['a']},
-  {iRelay: 3, iDic: 2, bank: relayBanks['a']},
-  {iRelay: 4, iDic: 3, bank: relayBanks['a']},
-  {iRelay: 5, iDic: 4, bank: relayBanks['a']},
-  {iRelay: 6, iDic: 5, bank: relayBanks['a']},
-  {iRelay: 7, iDic: 6, bank: relayBanks['a']},
-  {iRelay: 8, iDic: 7, bank: relayBanks['a']},
-  {iRelay: 9, iDic: 0, bank: relayBanks['b']},
-  {iRelay: 10, iDic: 1, bank: relayBanks['b']},
+  {iRelay: 1, iDic: 0, bank: relayBanks.a},
+  {iRelay: 2, iDic: 1, bank: relayBanks.a},
+  {iRelay: 3, iDic: 2, bank: relayBanks.a},
+  {iRelay: 4, iDic: 3, bank: relayBanks.a},
+  {iRelay: 5, iDic: 4, bank: relayBanks.a},
+  {iRelay: 6, iDic: 5, bank: relayBanks.a},
+  {iRelay: 7, iDic: 6, bank: relayBanks.a},
+  {iRelay: 8, iDic: 7, bank: relayBanks.a},
+  {iRelay: 9, iDic: 0, bank: relayBanks.b},
+  {iRelay: 10, iDic: 1, bank: relayBanks.b},
 ]
 const address = 0x20
 
 
-function toggleRelay (ctx) {
+async function toggleRelay (ctx) {
   var i2c = require('i2c-bus'),
-  i2c1 = i2c.openSync(1);
+  i2c1 = await i2c.openSync(1);
 
   // i2c1.writeWordSync(address, 0x00,0x00);
   // i2c1.writeWordSync(address, 0x01,0x00);
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  let value =  i2c1.readWordSync(address, actualRelay.bank)
+  let value = await i2c1.readWordSync(address, actualRelay.bank)
   
   //Shift the bits for the register value, checking if they are already set first
   if ((value >> actualRelay.iDic) & 1) {
@@ -54,7 +54,7 @@ function toggleRelay (ctx) {
   }
 
   //Now write to the IO expander
-  i2c1.writeWordSync(address, actualRelay.bank, value)
+  await i2c1.writeWordSync(address, actualRelay.bank, value)
   
   ctx.body = 'Done'
 
