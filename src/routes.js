@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const pjson = require('../package.json')
 
 module.exports = app => {
-  const exampleResource = require('./resources/blink')
+  const toggleRelayResource = require('./resources/toggleRelay')
 
   router.get('/', ctx => {
     try {
@@ -27,5 +27,5 @@ module.exports = app => {
   })
 
   app.use(router.routes(), router.allowedMethods())
-  app.use(exampleResource.routes(), exampleResource.allowedMethods())
+  app.use(toggleRelayResource.routes(), toggleRelayResource.allowedMethods())
 }
