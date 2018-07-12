@@ -6,5 +6,6 @@ module.exports = async (ctx, next) => {
   await next()
 
   ctx.set('x-response-time', Math.ceil(Date.now() - start))
+  ctx.set('server', require("os").hostname())
   ctx.set('version', pkg.version)
 }
