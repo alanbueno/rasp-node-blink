@@ -1,23 +1,5 @@
 // @flow
 
-// const dic_pins = { 
-//   "relay1": 0, 
-//   "relay2": 1, 
-//   "relay3": 2, 
-//   "relay4": 3, 
-//   "relay5": 4, 
-//   "relay6": 5, 
-//   "relay7": 6, 
-//   "relay8": 7, 
-  
-//   "relay9": 0, 
-//   "relay10": 1, 
-
-//   "transistor1": 3, 
-//   "transistor2": 2, 
-//   "transistor3": 4 
-// }
-
 const { Bus, Device } = require('i2c-bus-promised')
 
 const relayBanks = {a: 0x12, b: 0x13}
@@ -60,7 +42,7 @@ async function toggleRelay (ctx) {
         value += (1 << actualRelay.iDic)
       }
 
-      console.log(`Leu o valor: ${value}`)
+      console.log(`Relê ${actualRelay.iRelay}: ${value}`)
 
       await relaysBus.writeByte(actualRelay.bank,value);
 
@@ -72,10 +54,6 @@ async function toggleRelay (ctx) {
       console.log(err)
     })
   
-    // let value = await relays.readWord(actualRelay.bank)
-  
-  ctx.body = 'Done'
-
   return ctx
 }
 
