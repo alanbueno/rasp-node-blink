@@ -40,15 +40,15 @@ async function toggleRelay (ctx) {
   const bus = new Bus();
   await bus.open();
 
-  const relays = new Device(bus, address);
+  const relaysBus = new Device(bus, address);
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  await relays.writeByte(0x00,0x00);
-  await relays.writeByte(0x01,0x00);
+  await relaysBus.writeByte(0x00,0x00);
+  await relaysBus.writeByte(0x01,0x00);
 
   Promise.all([
-    relays.readWord(actualRelay.bank)
+    relaysBus.readWord(actualRelay.bank)
   ])
     .then(async ([value]) => {
       //Shift the bits for the register value, checking if they are already set first
@@ -62,7 +62,7 @@ async function toggleRelay (ctx) {
 
       console.log(`Leu o valor: ${value}`)
 
-      await relays.writeByte(actualRelay.bank,value);
+      await relaysBus.writeByte(actualRelay.bank,value);
 
       ctx.body = {
         state: value
