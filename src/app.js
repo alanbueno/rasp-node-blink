@@ -10,7 +10,7 @@ app.use(require('./middleware/response-header'))
 
 app.use(require('./middleware/error-handler'))
 
-app.use(require('./middleware/response-decorator'));
+app.use(require('./middleware/response-decorator'))
 
 require('./routes')(app)
 

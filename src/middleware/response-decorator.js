@@ -1,6 +1,5 @@
 module.exports = async (ctx, next) => {
-  
-  await next();
+  await next()
 
   ctx.response.body = ctx.response.body || {}
 }

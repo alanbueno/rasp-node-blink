@@ -15,20 +15,20 @@ const relays = [
   { iRelay: 7, iDic: 6, bank: relayBanks.a },
   { iRelay: 8, iDic: 7, bank: relayBanks.a },
   { iRelay: 9, iDic: 0, bank: relayBanks.b },
-  { iRelay: 10, iDic: 1, bank: relayBanks.b },
+  { iRelay: 10, iDic: 1, bank: relayBanks.b }
 ]
 const address = 0x20
 
-async function toggleRelay(ctx) {
-  const bus = new Bus();
-  await bus.open();
+async function toggleRelay (ctx) {
+  const bus = new Bus()
+  await bus.open()
 
-  const relaysBus = new Device(bus, address);
+  const relaysBus = new Device(bus, address)
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  await relaysBus.writeByte(0x00, 0x00);
-  await relaysBus.writeByte(0x01, 0x00);
+  await relaysBus.writeByte(0x00, 0x00)
+  await relaysBus.writeByte(0x01, 0x00)
 
   let [err, word] = await to(relaysBus.readWord(actualRelay.bank))
   if (err) {
@@ -37,21 +37,22 @@ async function toggleRelay(ctx) {
 
   let state
   if ((word >> actualRelay.iDic) & 1) {
-    //go to low state
+    // go to low state
     word -= (1 << actualRelay.iDic)
     state = 'off'
   } else {
-    //go to high state
+    // go to high state
     word += (1 << actualRelay.iDic)
     state = 'on'
   }
 
-  await relaysBus.writeByte(actualRelay.bank, word);
+  await relaysBus.writeByte(actualRelay.bank, word)
 
-  // ctx.status = 200 
-  return ctx.body = {
+  ctx.body = {
     state
   }
+
+  return ctx
 }
 
 module.exports.toggleRelay = toggleRelay
