@@ -1,6 +1,6 @@
 {
   "name": "rasp-node-blink",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "App for tests with NodeJS on top of a Raspberry Pi 3 model B ",
   "main": "index.js",
   "scripts": {
