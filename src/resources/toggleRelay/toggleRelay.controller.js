@@ -18,7 +18,7 @@
 //   "transistor3": 4 
 // }
 
-import { Bus, Device } from 'i2c-bus-promised'
+const { Bus, Device } = require('i2c-bus-promised')
 
 const relayBanks = {a: 0x12, b: 0x13}
 
