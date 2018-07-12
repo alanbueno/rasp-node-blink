@@ -1,3 +1,5 @@
+// @flow
+
 // const dic_pins = { 
 //   "relay1": 0, 
 //   "relay2": 1, 
@@ -16,7 +18,9 @@
 //   "transistor3": 4 
 // }
 
-const relayBanks = {a: [0x12], b: [0x13]}
+import { Bus, Device } from 'i2c-bus-promised'
+
+const relayBanks = {a: 0x12, b: 0x13}
 
 const relays = [
   {iRelay: 1, iDic: 0, bank: relayBanks.a},
@@ -32,29 +36,43 @@ const relays = [
 ]
 const address = 0x20
 
-
 async function toggleRelay (ctx) {
-  var i2c = require('i2c-bus'),
-  i2c1 = await i2c.openSync(1);
+  const bus = new Bus();
+  await bus.open();
 
-  // i2c1.writeWordSync(address, 0x00,0x00);
-  // i2c1.writeWordSync(address, 0x01,0x00);
+  const relays = new Device(bus, address);
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  let value = await i2c1.readWordSync(address, actualRelay.bank)
-  
-  //Shift the bits for the register value, checking if they are already set first
-  if ((value >> actualRelay.iDic) & 1) {
-    //already high go to lo low state
-    value -= (1 << actualRelay.iDic)
-  } else {
-    //already lo go to high low state
-    value += (1 << actualRelay.iDic)
-  }
+  await relays.writeByte(0x00,0x00);
+  await relays.writeByte(0x01,0x00);
 
-  //Now write to the IO expander
-  await i2c1.writeWordSync(address, actualRelay.bank, value)
+  Promise.all([
+    relays.readWord(actualRelay.bank)
+  ])
+    .then(([value]) => {
+      //Shift the bits for the register value, checking if they are already set first
+      if ((value >> actualRelay.iDic) & 1) {
+        //already high go to lo low state
+        value -= (1 << actualRelay.iDic)
+      } else {
+        //already lo go to high low state
+        value += (1 << actualRelay.iDic)
+      }
+
+      console.log(`Leu o valor: ${value}`)
+
+      await relays.writeByte(actualRelay.bank,value);
+
+      ctx.body = {
+        state: value
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  
+    // let value = await relays.readWord(actualRelay.bank)
   
   ctx.body = 'Done'
 
