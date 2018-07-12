@@ -42,19 +42,15 @@ async function toggleRelay (ctx) {
         value += (1 << actualRelay.iDic)
       }
 
-      console.log(`Relê ${actualRelay.iRelay}: ${value}`)
-
       await relaysBus.writeByte(actualRelay.bank,value);
 
-      ctx.body = {
+      return ctx.body = {
         state: value
       }
     })
     .catch(err => {
       console.log(err)
     })
-  
-  return ctx
 }
 
 module.exports.toggleRelay = toggleRelay
