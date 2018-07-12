@@ -50,7 +50,7 @@ async function toggleRelay (ctx) {
   Promise.all([
     relays.readWord(actualRelay.bank)
   ])
-    .then(([value]) => {
+    .then(async ([value]) => {
       //Shift the bits for the register value, checking if they are already set first
       if ((value >> actualRelay.iDic) & 1) {
         //already high go to lo low state
