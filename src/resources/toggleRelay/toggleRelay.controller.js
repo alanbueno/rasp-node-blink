@@ -35,19 +35,22 @@ async function toggleRelay(ctx) {
     throw err
   }
 
-  if ((value >> actualRelay.iDic) & 1) {
-    //already high go to lo low state
-    value -= (1 << actualRelay.iDic)
+  let state
+  if ((word >> actualRelay.iDic) & 1) {
+    //go to low state
+    word -= (1 << actualRelay.iDic)
+    state = 'off'
   } else {
-    //already lo go to high low state
-    value += (1 << actualRelay.iDic)
+    //go to high state
+    word += (1 << actualRelay.iDic)
+    state = 'on'
   }
 
-  await relaysBus.writeByte(actualRelay.bank, value);
+  await relaysBus.writeByte(actualRelay.bank, word);
 
   // ctx.status = 200 
   return ctx.body = {
-    state: value
+    state
   }
 }
 
