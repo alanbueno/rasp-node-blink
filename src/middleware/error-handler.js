@@ -4,8 +4,7 @@ module.exports = async (ctx, next) => {
   try {
     await next()
 
-    const status = ctx.status || 404
-    if (status === 404) { ctx.throw(Boom.notFound('Route not found')) }
+    if (!ctx._matchedRoute) { ctx.throw(Boom.notFound('Route not found')) }
   } catch (error) {
     ctx.status = error.isJoi ? 400 : error.isBoom ? error.output.statusCode : (error.status || 500)
 
