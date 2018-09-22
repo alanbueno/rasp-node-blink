@@ -4,7 +4,7 @@ const address = 0x20
 
 module.exports = async () => {
   try {
-    const bus = new Bus()
+    const bus = await new Bus()
     await bus.open()
 
     const i2cBus = await new Device(bus, address)
