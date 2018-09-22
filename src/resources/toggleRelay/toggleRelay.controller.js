@@ -19,6 +19,7 @@ const relays = [
 
 async function toggleRelay (ctx) {
 
+  console.log(ctx)
   return ctx.body = 'blz'
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
