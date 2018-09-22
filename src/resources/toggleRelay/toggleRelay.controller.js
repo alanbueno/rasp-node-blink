@@ -1,6 +1,5 @@
 // @flow
 
-const { Bus, Device } = require('i2c-bus-promised')
 const { to } = require('await-to-js')
 
 const relayBanks = { a: 0x12, b: 0x13 }
@@ -17,20 +16,14 @@ const relays = [
   { iRelay: 9, iDic: 0, bank: relayBanks.b },
   { iRelay: 10, iDic: 1, bank: relayBanks.b }
 ]
-const address = 0x20
 
 async function toggleRelay (ctx) {
-  const bus = new Bus()
-  await bus.open()
 
-  const relaysBus = new Device(bus, address)
+  return ctx.body = 'blz'
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  await relaysBus.writeByte(0x00, 0x00)
-  await relaysBus.writeByte(0x01, 0x00)
-
-  let [err, word] = await to(relaysBus.readWord(actualRelay.bank))
+  let [err, word] = await to(ctx.relaysBus.readWord(actualRelay.bank))
   if (err) {
     throw err
   }
@@ -46,7 +39,7 @@ async function toggleRelay (ctx) {
     state = 'on'
   }
 
-  await relaysBus.writeByte(actualRelay.bank, word)
+  await ctx.relaysBus.writeByte(actualRelay.bank, word)
 
   ctx.body = {
     state
