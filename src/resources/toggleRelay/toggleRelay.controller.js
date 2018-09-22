@@ -19,12 +19,9 @@ const relays = [
 
 async function toggleRelay (ctx) {
 
-  console.log(ctx)
-  return ctx.body = 'blz'
-
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  let [err, word] = await to(ctx.relaysBus.readWord(actualRelay.bank))
+  let [err, word] = await to(ctx.i2cBus.readWord(actualRelay.bank))
   if (err) {
     throw err
   }
@@ -40,7 +37,7 @@ async function toggleRelay (ctx) {
     state = 'on'
   }
 
-  await ctx.relaysBus.writeByte(actualRelay.bank, word)
+  await ctx.i2cBus.writeByte(actualRelay.bank, word)
 
   ctx.body = {
     state
