@@ -5,7 +5,7 @@ const cors = require('@koa/cors');
 
 app.use(cors());
 
-app.context.i2cBus = require('./middleware/i2c-bus');
+app.context.i2cBus = require('./middleware/i2c-bus')();
 
 require('./middleware/sentry-logs')(app)
 
