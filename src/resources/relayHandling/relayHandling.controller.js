@@ -23,7 +23,18 @@ const relays = [
  * @param {*} ctx
  */
 function getAllRelayStates (ctx) {
+  const wordBankA = await to(ctx.i2cBus.readWord(relayBanks.a))
+  const wordBankB = await to(ctx.i2cBus.readWord(relayBanks.b))
 
+  const bank_16bits = ( wordBankB << 8) | wordBankA
+
+  let result = relays.map((relay, i) => ((bank_16bits >> i) & 1) ? {
+    ...relay, state: 'on'
+  } : {
+    ...relay, state: 'off'
+  })
+
+  ctx.body = result
 }
 
 /**
@@ -38,8 +49,35 @@ function getRelayState (ctx) {
  * Handler that set a specific relay status between on and off
  * @param {*} ctx
  */
-function setRelayState (ctx) {
+async function setRelayState(ctx) {
+  let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
+  let [err, word] = await to(ctx.i2cBus.readWord(actualRelay.bank))
+  if (err) {
+    throw err
+  }
+
+  // ========================== high state 
+  if ((word >> actualRelay.iDic) & 1)
+    console.log(`It's already high.`)
+  else {
+    word += (1 << actualRelay.iDic)
+    await ctx.i2cBus.writeByte(actualRelay.bank, word)
+  }
+  // ========================== high state 
+
+  // ========================== low state 
+  if ((word >> actualRelay.iDic) & 1){
+    word -= (1 << actualRelay.iDic)
+    await ctx.i2cBus.writeByte(actualRelay.bank, word)
+  }
+  else 
+    console.log(`It's already high.`)
+  // ========================== low state 
+
+  ctx.body = {
+    state
+  }
 }
 
 /**
