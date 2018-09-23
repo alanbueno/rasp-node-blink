@@ -2,11 +2,14 @@ const Koa = require('koa')
 const app = new Koa()
 const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors');
-const i2cBus = require('./middleware/i2c-bus')()
+const i2cBus = require('./middleware/i2c-bus')
 
 app.use(cors());
 
-app.context.i2cBus = i2cBus
+// mounting bus
+i2cBus()
+  .then(bus => app.context.i2cBus = bus)
+  .catch(err => console.error(err))
 
 require('./middleware/sentry-logs')(app)
 
