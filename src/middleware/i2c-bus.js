@@ -8,8 +8,8 @@ module.exports = async () => {
 
     const i2cBus = new Device(bus, address)
 
-    await i2cBus.writeByte(0x00, 0x00)
-    await i2cBus.writeByte(0x01, 0x00)
+    await i2cBus.writeByte(address, 0x00, 0x00)
+    await i2cBus.writeByte(address, 0x01, 0x00)
 
     return i2cBus
 
