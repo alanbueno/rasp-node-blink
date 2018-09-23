@@ -22,7 +22,7 @@ const relays = [
  * Handler that show the status of all relays
  * @param {*} ctx
  */
-function getAllRelayStates (ctx) {
+async function getAllRelayStates (ctx) {
   const wordBankA = await to(ctx.i2cBus.readWord(relayBanks.a))
   const wordBankB = await to(ctx.i2cBus.readWord(relayBanks.b))
 
