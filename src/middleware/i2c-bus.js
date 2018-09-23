@@ -14,6 +14,6 @@ module.exports = async () => {
     return i2cBus
 
   } catch (error) {
-    console.error('err', error)
+    console.error('Error inside bus mounter: ', error)
   }
 }

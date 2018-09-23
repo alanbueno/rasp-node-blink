@@ -9,7 +9,7 @@ app.use(cors());
 // mounting bus
 i2cBus()
   .then(bus => app.context.i2cBus = bus)
-  .catch(err => console.error(err))
+  .catch(err => console.error('Error calling bus mounter: ', err))
 
 require('./middleware/sentry-logs')(app)
 
