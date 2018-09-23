@@ -12,7 +12,6 @@ module.exports = async () => {
     await i2cBus.writeByte(address, 0x01, 0x00)
 
     return i2cBus
-
   } catch (error) {
     console.error('Error inside bus mounter: ', error)
   }
