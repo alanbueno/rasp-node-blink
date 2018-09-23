@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const pjson = require('../package.json')
 
 module.exports = app => {
-  const toggleRelayResource = require('./resources/toggleRelay')
+  const toggleRelayResource = require('./resources/relayHandling')
 
   router.get('/', ctx => {
     try {

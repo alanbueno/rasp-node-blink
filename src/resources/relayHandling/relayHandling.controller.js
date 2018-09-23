@@ -1,6 +1,7 @@
 // @flow
 
 const { to } = require('await-to-js')
+const joi = require('joi')
 
 const relayBanks = { a: 0x12, b: 0x13 }
 
@@ -17,7 +18,37 @@ const relays = [
   { iRelay: 10, iDic: 1, bank: relayBanks.b }
 ]
 
+/**
+ * Handler that show the status of all relays
+ * @param {*} ctx 
+ */
+function getAllRelayStates(ctx){
+
+}
+
+/**
+ * Handler that show a specific relay status 
+ * @param {*} ctx 
+ */
+function getRelayState(ctx){
+  
+}
+
+/**
+ * Handler that set a specific relay status between on and off
+ * @param {*} ctx 
+ */
+function setRelayState(ctx){
+
+}
+
+/**
+ * Handler that toggle the relay status between on and off
+ * @param {*} ctx 
+ */
 async function toggleRelay (ctx) {
+
+  // joi
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
@@ -46,4 +77,9 @@ async function toggleRelay (ctx) {
   return ctx
 }
 
-module.exports.toggleRelay = toggleRelay
+module.exports = {
+  getAllRelayStates,
+  getRelayState,
+  setRelayState,
+  toggleRelay
+}
