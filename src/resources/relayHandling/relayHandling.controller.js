@@ -28,9 +28,11 @@ async function getAllRelayStates (ctx) {
 
   const bank_16bits = ( wordBankB << 8) | wordBankA
 
-  let result = relays.map((relay, i) => ((bank_16bits >> i) & 1) ? {
+  let result = relays.map((relay, i) => ((bank_16bits >> i) & 1)
+  ? {
     ...relay, state: 'on'
-  } : {
+  } 
+  : {
     ...relay, state: 'off'
   })
 
