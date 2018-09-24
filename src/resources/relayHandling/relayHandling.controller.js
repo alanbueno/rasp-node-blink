@@ -91,7 +91,7 @@ async function toggleRelay (ctx) {
 
   let actualRelay = relays.find(relay => relay.iRelay === Number(ctx.params.idRelay))
 
-  let [err, word] = await to(ctx.i2cBus.readWord(actualRelay.bank))
+  let [err, word] = await to(ctx.i2cBus.readByte(actualRelay.bank))
   if (err) {
     throw err
   }
