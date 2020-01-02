@@ -40,7 +40,7 @@
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "raven": "^2.6.3"
+    "raven": "^2.6.4"
   },
   "devDependencies": {
     "snazzy": "^7.1.1",
