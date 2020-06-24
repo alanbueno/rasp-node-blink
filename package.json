@@ -44,6 +44,6 @@
   },
   "devDependencies": {
     "snazzy": "^8.0.0",
-    "standard": "^14.3.3"
+    "standard": "^14.3.4"
   }
 }
