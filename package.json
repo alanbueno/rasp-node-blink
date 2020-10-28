@@ -43,7 +43,7 @@
     "raven": "^2.6.4"
   },
   "devDependencies": {
-    "snazzy": "^8.0.0",
+    "snazzy": "^9.0.0",
     "standard": "^14.3.4"
   }
 }
