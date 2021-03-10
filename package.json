@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/alanbueno/rasp-node-blink#readme",
   "dependencies": {
-    "await-to-js": "^2.1.1",
+    "await-to-js": "^3.0.0",
     "boom": "^7.3.0",
     "config": "^3.3.2",
     "dotenv": "^8.2.0",
